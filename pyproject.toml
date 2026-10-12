@@ -1,0 +1,19 @@
+[project]
+name = "genai"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "dotenv>=0.9.9",
+    "groq>=1.7.0",
+    "matplotlib>=3.11.2",
+    "numpy>=2.5.3",
+    "ollama>=0.6.3",
+    "pandas>=3.0.6",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.4.0",
+]
