@@ -4,6 +4,8 @@
 
 ## Lab 02 
 
+## Samodzielne zadania:
+
 ### Ćwiczenie 2.1
 
 gpt-oss-120b:

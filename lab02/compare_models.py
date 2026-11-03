@@ -10,7 +10,7 @@ client = Groq(api_key=os.getenv('GROQ_API_KEY'))
 # nazwy modeli w jednym miejscu - latwiej je podmienic, gdy dostawca
 # wycofa model (patrz uwaga pod skryptem)
 MODEL = 'openai/gpt-oss-120b'
-MODEL_LOKALNY = 'gemma3:1b'
+MODEL_LOKALNY = 'llama3.1'
 PROMPT = ('Jesteś ekspertem od sztucznej inteligencji. Wyjaśnij w 3-4 zdaniach, czym jest transformer W kontekście modeli językowych. Użyj prostego języka, zrozumiałego dla studenta pierwszego roku informatyki.')
 # --- model zewnetrzny: Groq (API) ---
 print(f'=== {MODEL} (model zewnetrzny) ===')
@@ -28,8 +28,9 @@ except APIError as e:
     # np. blad 429 (przekroczony limit zapytan) lub problem kluczem/siecia
     print(f'[Blad Groq API] {e}')
     print('Pomijam Groq i przechodze do modelu lokalnego.')
-    # --- model lokalny: Ollama ---
-    print(f'=== {MODEL_LOKALNY} (model lokalny) ===')
+
+# --- model lokalny: Ollama ---
+print(f'=== {MODEL_LOKALNY} (model lokalny) ===')
 try:
     start = time.perf_counter()
     local = ollama.chat(model=MODEL_LOKALNY,

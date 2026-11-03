@@ -1,0 +1,43 @@
+=== WERSJA A - biznes ===
+PROMPT:
+Wyjaśnij właścicielowi małej firmy, bez wykształcenia technicznego, czym jest konteneryzacja aplikacji (Docker) i jakie korzyści biznesowe daje jej wdrożenie. Użyj codziennej analogii i unikaj żargonu technicznego. Maksymalnie 100 słów.
+
+ODPOWIEDŹ (82 słów, 1.2 s):
+Wyobraź sobie, że Twoja aplikacja to zestaw dań w restauracji. Kontenery to takie jednorazowe pojemniki, w których każde danie jest już przygotowane, zapakowane i gotowe do podania – nie musisz szukać składników ani piec w piecu w każdym lokalu. Dzięki temu możesz przenieść aplikację na dowolny serwer tak szybko, jak wstawisz pojemnik na półkę. Korzyści: mniejsze koszty sprzętu (lepsze wykorzystanie istniejących maszyn), szybsze uruchamianie nowych funkcji, łatwiejsze aktualizacje bez przerywania pracy oraz większe bezpieczeństwo, bo problemy w jednym pojemniku nie zarażają innych.
+
+=== WERSJA B - student ===
+PROMPT:
+Wyjaśnij studentowi pierwszego roku informatyki, czym jest kontener Dockera i czym różni się od maszyny wirtualnej. Użyj podstawowych pojęć z systemów operacyjnych i podaj jedno przykładowe polecenie docker run. Około 150 słów.
+
+ODPOWIEDŹ (174 słów, 1.2 s):
+**Kontener Dockera** to lekka, odizolowana jednostka uruchomieniowa, która zawiera aplikację oraz wszystkie jej zależności (biblioteki, pliki konfiguracyjne). Kontenery współdzielą **jądro systemu operacyjnego** hosta – nie uruchamiają własnego OS, a jedynie własny **przestrzeń nazw (namespace)** i **cgroupy**, które izolują procesy, sieć i zużycie zasobów. Dzięki temu startują w sekundach i zajmują bardzo mało pamięci.
+
+**Maszyna wirtualna (VM)** to pełny komputer wirtualny. Na hoście działa **hipernadzorca (hypervisor)**, który emuluje cały sprzęt i uruchamia w niej oddzielny system operacyjny (gość). Każda VM ma własne jądro, co oznacza większe zużycie RAM i dysku oraz dłuższy czas uruchamiania.
+
+**Różnice kluczowe**  
+- **Jądro**: kontener używa jądra hosta, VM ma własne.  
+- **Waga**: kontenery ważą kilkaset MB, VM często kilka GB.  
+- **Izolacja**: VM zapewnia silniejszą izolację (oddzielny OS), kontenery – lekko‑bardziej „przyjacielską” izolację na poziomie procesów.  
+
+Przykładowe polecenie uruchamiające kontener z Nginx:
+
+```bash
+docker run -d -p 8080:80 --name my-nginx nginx:latest
+```
+
+Polecenie pobiera obraz `nginx:latest` (jeśli go nie ma), uruchamia go w tle (`-d`), mapuje port 80 kontenera na port 8080 hosta (`-p 8080:80`) i nadaje kontenerowi nazwę `my-nginx`.
+
+=== WERSJA C - administrator ===
+PROMPT:
+Przedstaw doświadczonemu administratorowi systemów zwięzłe porównanie kontenerów i maszyn wirtualnych na poziomie izolacji zasobów (przestrzenie nazw, cgroups). Wskaż dwa typowe zastosowania produkcyjne i jedno ryzyko bezpieczeństwa. Około 150 słów, forma zwięzłych akapitów.
+
+ODPOWIEDŹ (156 słów, -1.3 s):
+**Izolacja zasobów**  
+Maszyny wirtualne (VM) działają na pełnym hypervisorze – każdy gość ma własny zestaw wirtualnych urządzeń, własny kernel i własny zestaw cgroupów, co zapewnia silną granicę pomiędzy obciążeniami. Kontenery natomiast korzystają z przestrzeni nazw (PID, net, mount, IPC, UTS) i cgroupów w obrębie jednego kernela hosta; izolacja jest lżejsza, ale współdzieli jądro, więc awaria lub błąd w jądrze jednego kontenera może wpływać na wszystkie.
+
+**Typowe zastosowania produkcyjne**  
+1. **Micro‑serwisy w kontenerach** – szybkie wdrażanie, skalowanie i konsystentny stack w środowiskach CI/CD; izolacja nazw i limitowanie CPU/mem w cgroupach zapewnia efektywne wykorzystanie zasobów.  
+2. **Izolowane środowiska testowe lub legacy‑aplikacje w VM** – potrzebują własnego systemu operacyjnego, specyficznych sterowników lub starszych wersji bibliotek, co wymaga pełnej wirtualizacji.
+
+**Ryzyko bezpieczeństwa**  
+Ponieważ kontenery dzielą kernel, exploitujący lukę w jądrze Linuxa (np. Escalation via CVE w cgroup‑namespace) może przełamać izolację i uzyskać dostęp do hosta oraz innych kontenerów – ryzyko nie występuje w tradycyjnych VM, które mają własne, odseparowane jądra.
