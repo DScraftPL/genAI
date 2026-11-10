@@ -42,7 +42,7 @@ elif r.status_code in (400, 404):
 elif r.status_code == 429:
     print("Wskazowka: wyczerpany dzienny limit - sprobuj jutro.")
 
-sys.exit(1)
+    sys.exit(1)
 # odpowiedz: {"result": {"image": "<obraz zakodowany w base64>"}, ...}
 dane = base64.b64decode(r.json()["result"]["image"])
 os.makedirs("out", exist_ok=True)
